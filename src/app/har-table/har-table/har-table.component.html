@@ -1,0 +1,93 @@
+<div class="card">
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <p-dropdown [options]="options" [(ngModel)]="selected_option" (onChange)="ChangePaxType($event)"optionLabel="name" placeholder="Add File" [showClear]="true" [editable]="true" ></p-dropdown> 
+
+        </ng-template>
+        
+        <ng-template pTemplate="right">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"  placeholder="Search BOT" />
+            </span>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt  [value]="HAR_Data" (sortFunction)="customSort($event)" [customSort]="true" [tableStyle]="{'min-width': '60rem'}" [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [(first)]="first" [tableStyle]="{'min-width': '50rem'}"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [globalFilterFields]="['FolderName','Type_of_Repository','Size','Owner','UpdatedDate']">
+    
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="FolderName" style="width:20%">FolderName <p-sortIcon field="FolderName"></p-sortIcon><p-columnFilter type="text" field="FolderName" display="menu"></p-columnFilter></th>
+                <th pSortableColumn="Type_of_Repository" style="width:20%">Type of Repository<p-sortIcon field="Type_of_Repository"></p-sortIcon><p-columnFilter type="text" field="Type_of_Repository" display="menu"></p-columnFilter></th>
+                <th pSortableColumn="Size" style="width:20%">Size<p-sortIcon field="Size"></p-sortIcon><p-columnFilter type="number" field="Size" display="menu"></p-columnFilter></th>
+                <th pSortableColumn="Owner" style="width:20%">Owner<p-sortIcon field="Owner"></p-sortIcon><p-columnFilter type="text" field="Owner" display="menu"></p-columnFilter></th>
+                <th pSortableColumn="UpdatedDate" style="width:20%">Updated Date<p-sortIcon field="UpdatedDate"></p-sortIcon><p-columnFilter type="date" field="UpdatedDate" display="menu"></p-columnFilter></th>
+                <th>Download</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-HAR_Data>
+            <tr (dblclick)="send(HAR_Data)">
+                <td><i class="pi pi-folder"> {{HAR_Data}}</i></td>
+                <td>.txt file</td>
+                <td>3.2MB</td>
+                <td>Mobito</td>
+                <td>Mar 14, 2023</td>
+                <td><i class="pi pi-cloud-download"></i></td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>        
+
+<!-- Addfolder -->
+<p-dialog [(visible)]="add_bot" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+<ng-template pTemplate="header" >
+<p class="dialogheader"><b>Add Folder</b></p>
+</ng-template>
+<label for="username1" class="block">Folder Name</label>
+<div class="p-inputgroup">
+<input  [(ngModel)]="directory_name" input id="username1" type="text" pInputText placeholder="File Name">         
+</div>
+<label for="username2" class="block">Description</label>
+<div class="p-inputgroup">
+<input  [(ngModel)]="readme" input id="username2" type="text" pInputText placeholder="File Content">         
+</div>
+<div class="footer">
+<p-button label="Create" (click)="createfolder()"></p-button>
+</div>   
+</p-dialog>
+
+<!-- Upload_dialogue -->
+<p-dialog [(visible)]="upload" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+<ng-template pTemplate="header">
+<p class="dialogheader"><b>Upload File</b></p>
+</ng-template>
+<label for="username1" class="block">Folder Name:</label>
+<div class="p-inputgroup">
+<input  [(ngModel)]="upload_name" input id="username1" type="text" pInputText>         
+</div><br>
+<p-toast></p-toast> 
+<!-- <p-fileUpload mode="basic" name="myfile" url="http://localhost:34610/api/File_Upload/uploadfile/HAR_REPOSITORY"  (click)="onUpload()"></p-fileUpload> -->
+<p-fileUpload #fileInput name="myfile" 
+  chooseLabel="Choose" (onSelect)="onUpload($event)">
+  <!-- <ng-template pTemplate="content">
+    <ul *ngIf="uploadedFiles.length">
+      <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+    </ul>
+  </ng-template> -->
+</p-fileUpload>
+</p-dialog>
+
+<p-dialog [(visible)]="view_content" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header" >
+    <p class="dialogheader"><b>Add Folder</b></p>
+    </ng-template>
+    <label for="username1" class="block">Folder Name</label>
+    <div class="p-inputgroup">
+    <input  [(ngModel)]="directory_name" input id="username1" type="text" pInputText placeholder="File Name">         
+    </div>
+    <div class="footer">
+    <p-button label="Create"></p-button>
+    </div>   
+</p-dialog>

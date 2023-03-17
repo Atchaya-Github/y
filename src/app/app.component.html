@@ -1,0 +1,25 @@
+<p-tabMenu [model]="items" [activeItem]="activeItem">
+</p-tabMenu>
+<ng-template #customContent>
+    <button type="button">My Button</button>
+  </ng-template>
+<p-dialog [(visible)]="create_repo" [modal]="true" [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header" >
+        <p class="dialogheader"><b>Repository Registeration</b></p>
+     </ng-template>
+     <div class="card">
+        <label for="username1" class="block">Repository Name:</label>
+        <div class="p-inputgroup">
+            <input  [(ngModel)]="name" input id="username1" type="text" pInputText>         
+        </div><br>
+    <label for="username1" class="block">Select a Service Provider:</label><br>
+  <p-dropdown class="flex align-items-center justify-content-center" [options]="cities" [(ngModel)]="selected_option" placeholder="Select a Service Provider" optionLabel="name" [showClear]="true"></p-dropdown><br>
+<br><label for="visibility" class="block">Visibility:</label>
+<p-selectButton [options]="stateOptions" input id="visibility" [(ngModel)]="value1" optionLabel="label" optionValue="value" (onChange)="visibility_fn($event)" ></p-selectButton>
+</div> 
+<div class="footer">
+    <p-button label="Create" (click)="createfolder()"></p-button>
+</div>    
+</p-dialog>
+
+<router-outlet></router-outlet>
